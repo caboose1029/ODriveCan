@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-,:!=\\[\\]()\"`/]+|\\.(?!\\d)|&[lg]t;|(?!\\b)(?=[A-Z][a-z])","pipeline":["stopWordFilter"]},"docs":[{"location":"","title":"Example","text":"<p>My first docs!</p>"},{"location":"#example_1","title":"Example","text":"<pre><code>print(\"hello world\")\n</code></pre> <p>I can add a bunch of documentation here! </p>"}]}
