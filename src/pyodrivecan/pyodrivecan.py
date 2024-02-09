@@ -26,7 +26,7 @@ import board
 import can
 import struct
 import time
-
+import odrivedatabase as db
 
 
 
@@ -286,7 +286,16 @@ class ODriveCAN:
 
         return all_data
 
+    def write_all_data(self):
+        # Collect data from each function
+        encoder_data = self.get_one_encoder_estimate() 
+        torque_data = self.get_one_bus_voltage_current()
+        voltage_current_data = self.get_one_bus_voltage_current()
+        iq_setpoint_measured_data = self.get_one_iq_setpoint_measured()
+        #power_data = self.get_one_powers()
 
+        all_data = encoder_data + torque_data + voltage_current_data + iq_setpoint_measured_data
+        db.add_odrive_data(all_data)
 
 
     """

@@ -121,24 +121,31 @@ class OdriveDatabase:
 
 
 
-    def add_odrive_data(self, trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power):
+    def add_odrive_data(self, trial_id, node_ID, data):
         """
         Inserts data into the ODriveData table.
 
         Para:
-            trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power - Fields representing the data to be inserted into the ODriveData table.
+            trial_id, node_ID, time, data - Fields representing the data to be inserted into the ODriveData table.
 
         Returns:
             The row ID of the last row this INSERT modified, or None on failure.
 
         Example:
-            >>> database.add_odrive_data(1, 'node_1', '2024-02-09 10:00:00', 123.45, 67.89, 2.34, 2.30, 48.0, 1.5, 3.33, 3.30, 120, 110)
+            >>> database.add_odrive_data(1, 'node_1', '2024-02-09 10:00:00', data)
             ...
             ... 1
         """
-        sql = '''INSERT INTO ODriveData(trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power)
-                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);'''
-        return self.execute(sql, (trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power))
+        sql = '''
+                INSERT INTO ODriveData(trial_id, node_ID, time, position, velocity, 
+                                        torque_target, torque_estimate, bus_voltage, bus_current, 
+                                        iq_setpoint, iq_measured, electrical_power, mechanical_power)
+                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+            '''
+        params = (trial_id, node_ID, time, data[0], data[1], data[2], data[3], 
+                    data[4], data[5], data[6], data[7], data[8], data[9])
+        
+        return self.execute(sql, params)
 
 
 
@@ -170,4 +177,7 @@ iq_measured = 3.30
 electrical_power = 120
 mechanical_power = 110
 
-database.add_odrive_data(trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power)
+data = [position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power]
+database.add_odrive_data(trial_id, node_ID, data)
+
+#database.add_odrive_data(trial_id, node_ID, time, position, velocity, torque_target, torque_estimate, bus_voltage, bus_current, iq_setpoint, iq_measured, electrical_power, mechanical_power)
